@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Use UPI to pay - Poster</title>
+  <style>
+    /* Basic reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { height: 100%; font-family: "Segoe UI", Roboto, Arial, sans-serif; background:white; color:#111; }
+
+    /* Container */
+    .poster {
+      max-width: 720px;
+      margin: 24px auto;
+      padding: 28px;
+      border-radius: 8px;
+      /* subtle card shadow if you want */
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      background-color:whitesmoke;
+    }
+
+    /* Header */
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    /* Steps */
+    .steps {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      color: #111;
+    }
+
+    .steps ol {
+      padding-left: 22px;
+    }
+
+    /* Amount line (inline with step 3) */
+    .amount { font-weight:700; }
+
+    /* QR block */
+    .qr-wrap {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      margin: 14px 0 8px;
+    }
+    .qr {
+      width: 220px;    /* change to control printed size */
+      height: 220px;
+      max-width: 80%;
+      max-height: 80%;
+      object-fit: contain;
+      border-radius: 4px;
+      background:black;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* supported apps row */
+    .apps {
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:12px;
+      margin-bottom:8px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .apps img {
+      width:38px;
+      height:38px;
+      object-fit:contain;
+      border-radius:6px;
+      background:#fff;
+      padding:4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .see-all {
+      display:block;
+      margin-top:8px;
+      color:#1a73e8;
+      text-decoration:none;
+      font-size:15px;
+    }
+
+    hr { border: none; border-top:1px solid #eee; margin: 18px 0; }
+
+    .expiry {
+      text-align:center;
+      font-size:16px;
+      color:#111;
+    }
+
+    .timer {
+      color:#1a73e8;
+      font-weight:700;
+    }
+
+    /* small-screen tweaks */
+    @media (max-width:420px){
+      .title { font-size:22px; }
+      .steps { font-size:16px; }
+      .qr { width:260px; height:260px; }
+    }
+
+    /* print styles (if you want to print) */
+    @media print {
+      body { background: #fff; }
+      .poster { box-shadow:none; border:none; margin: 0; padding: 0; }
+      .qr { width: 200px; height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="poster" role="main" aria-label="UPI payment poster">
+    <div class="title">Use UPI to pay</div>
+
+    <div class="steps" aria-hidden="false">
+      <ol>
+        <li>Open the app linked to your UPI</li>
+        <li>Scan the QR code</li>
+        <li>Approve your <span class="amount">2000/-</span> charge to complete transaction</li>
+      </ol>
+    </div>
+
+    <div class="qr-wrap" aria-hidden="false">
+      <!-- Replace the src below with your QR image file -->
+      <img class="qr" id="qrImg" src="qr.png" alt="QR cod(replace with your QR image)">
+      <!-- If you want a circular badge or logo under QR you can add here -->
+      <div class="apps" aria-label="Supported apps">
+        <!-- Replace these images with your own supported app icons -->
+        <img src="gpay.png" alt="GPay logo (replace)">
+        <img src="phonepe-173406830-1x1.jpg" alt="PhonePe logo (replace)">
+        <img src="paytm.jpg" alt="Paytm logo (replace)">
+        <img src="amazon.png" alt="WhatsApp Pay logo (replace)">
+        <!-- add/remove icons as needed -->
+      </div>
+
+      <a class="see-all" href="#" onclick="return false;">See all supported apps</a>
+    </div>
+
+    <hr />
+
+    <div class="expiry" aria-live="polite">
+      This page will automatically expire in <span id="countdown" class="timer">10:00</span> minutes
+    </div>
+  </div>
+
+  <script>
+    // ====== CONFIGURE HERE ======
+    // Set countdownMinutes to whatever starting minutes you want (10 = 10:00)
+    const countdownMinutes = 10;
+
+    // Optional: set amount text if you want to programmatically update it
+    // (Also edit the steps text in HTML if you prefer different phrasing)
+    // document.querySelector('.amount').textContent = '₹100.00';
+
+    // ====== COUNTDOWN LOGIC ======
+    const endTime = Date.now() + countdownMinutes * 60 * 1000;
+    const countdownEl = document.getElementById('countdown');
+
+    function updateTimer() {
+      const remaining = Math.max(0, endTime - Date.now());
+      const minutes = Math.floor(remaining / (60*1000));
+      const seconds = Math.floor((remaining % (60*1000)) / 1000);
+      countdownEl.textContent = minutes.toString().padStart(2,'0') + ':' + seconds.toString().padStart(2,'0');
+
+      if (remaining <= 0) {
+        clearInterval(timerInterval);
+        // action on expiry: visually indicate expired
+        countdownEl.textContent = '00:00';
+        countdownEl.style.color = '#d93025';
+        countdownEl.parentElement.innerHTML = 'This payment session has <strong>expired</strong>. Please refresh to generate a new QR.';
+      }
+    }
+
+    const timerInterval = setInterval(updateTimer, 250);
+    updateTimer();
+
+    // ====== OPTIONAL: drag/drop to preview QR in browser ======
+    // If you open this html in browser, you can drop an image on the QR to replace it:
+    const qrImg = document.getElementById('qrImg');
+    document.body.addEventListener('dragover', e => e.preventDefault());
+    document.body.addEventListener('drop', e => {
+      e.preventDefault();
+      const f = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f && f.type.startsWith('image/')) {
+        const url = URL.createObjectURL(f);
+        qrImg.src = url;
+      }
+    });
+
+    // Accessibility: keyboard focus outlines
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Tab') document.body.classList.add('show-focus');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment Poster - Interactive</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    body{
+      background-color: white;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background-image: url('your-background-logo.png');
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: 150px auto;
+    }
+
+    .poster{
+      width: 1100px;
+      max-width:80%;
+      background: #fff;
+      height: 650px;
+      border-radius:22px;
+      padding:30px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .header{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:104px;height:104px;border-radius:12px;background-color: white;
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:700;
+      box-shadow:0 18px 18px rgba(0,0,0,0.08);
+      border-radius: 15px;
+    }
+    .title{font-size:28px;font-weight:700;color:#0b3b66;margin: 0px;}
+    .subtitle{color:#4b697f;margin-top:6px;font-size:14px;}
+
+    h2{font-size:34px;margin:18px 0 12px;color:#0b2d4a;text-align:center;}
+    .icons-row{
+      display:flex;
+      gap:18px;
+      justify-content:center;
+      margin-bottom:18px;
+    }
+    .icon-card{
+      width:120px;height:90px;
+      border-radius:12px;
+      background:#f0f6ff;
+      
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      font-weight:600;
+      color:#103a66;
+      padding:8px;
+    }
+    .icon-card img{
+      width:40px; height:40px; margin-bottom:6px; object-fit:contain;
+    }
+
+    .amount-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+      margin:14px 0 18px;
+      color:white;
+    
+    }
+    .amount{
+      min-width:110px;
+      padding:16px 18px;
+      border-radius:12px;
+      text-align:center;
+      font-weight:800;
+      font-size:20px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:0 6px 15px rgba(0,0,0,0.06);
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+      
+
+    .amount:active{transform:translateY(2px);}
+    .amount.green{background:#f0f6Ff;color:white;}
+    .amount.blue{background:#f0f6Ff;color:white;}
+    .amount.yellow{background:#f0f6Ff;color:#0b2d4a;}
+    .amount.orange{background:#f0f6Ff;color:#0b2d4a;}
+    .amount.red{background:#f0f6Ff;color:white;}
+    .amount.selected{outline:4px solid rgba(0,0,0,0.08); transform:scale(1.03); box-shadow:0 12px 26px rgba(0,0,0,0.12);}
+    .amount:active.amount{color: red;}
+
+    .features{
+      padding:14px;
+      border-radius:10px;
+      margin:14px 0;
+      color:black; 
+      font-weight:900;
+    }
+    .note{
+      color:#1b2d40;
+      margin-top:12px;
+      text-align:center;
+      font-size:15px;
+    }
+
+    .bottom-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    .custom-box{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .custom-box input[type="number"]{
+      width:150px;padding:10px;border-radius:10px;border:1px solid #d0dde9;font-weight:700;
+      font-size:16px;
+    }
+    .btn{
+      padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:800;
+      box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    }
+    .btn.primary{background:#2b7de6;color:white;}
+    .btn.ghost{background:transparent;border:2px solid #d8e7ff;color:#103a66;}
+
+    .toast{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      background:#0b2d4a;color:white;padding:12px 16px;border-radius:10px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.2);
+      transform:translateY(30px);
+      opacity:0;
+      transition:all .28s ease;
+      z-index:9999;
+    }
+    .toast.show{transform:translateY(0);opacity:1;}
+
+    @media (max-width:640px){
+      .poster{padding:18px;border-radius:18px;}
+      h2{font-size:22px;}
+      .amount{min-width:90px;padding:12px 10px;font-size:18px;}
+      .logo{width:56px;height:56px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <div class="header">
+      <div class="logo"><img src="BMW.png" alt="Logo" style="width:100%;height:100%;object-fit:contain;border-radius:12px;"/></div>
+      <div>
+        <div class="title">PAYMENT SOLUTION SOFTECH COMPANY</div>
+      </div>
+    </div>
+
+    <h2>Payment Gateway Integration & Wallet Recharge</h2>
+
+    <div class="icons-row">
+      <div class="icon-card">
+       <button> <a href="4.jpg"> <img src="upi.png" alt="UPI" /></a></button> 
+        UPI
+      </div>
+      <div class="icon-card">
+        <img src="d.png" alt="Debit / Credit" />
+        Debit / Credit
+      </div>
+      <div class="icon-card">
+        <img src="n.png" alt="Net Banking" />
+        Net Banking
+      </div>
+      <div class="icon-card">
+        <img src="w.png" alt="Wallet" />
+        Wallet
+      </div>
+    </div>
+
+    <div class="amount-grid" id="amountGrid">
+      <div class="amount green" data-amount="0-100"><a href="QRCO0-100.html">0-100/-</a></div>
+      <div class="amount blue" data-amount="400"> <a href="QR400.HTML">400/-</a></div>
+      <div class="amount yellow" data-amount="500"><a href="QR500.HTML">500/-</a></div>
+      <div class="amount orange" data-amount="1000"><a href="QR1000.HTML">1000/-</a></div>
+      <div class="amount blue" data-amount="1500"><a href="QR1500.HTML">1500/-</a></div>
+      <div class="amount red" data-amount="2000"><a href="QR2000.HTML">2000/-</a></div>
+    </div>
+
+    <div class="features">
+      ⚡ Instant Recharge Facility<br>
+      ⚡ Lowest Transaction Charges<br>
+      ⚡ 24x7 Customer Support<br>
+      ⚡ Easy Refund & Settlement<br>
+      ⚡ Safe & Secure Transactions
+    </div>
+
+    <div class="note">You can directly add the payment to your wallet by selecting the amount above.</div>
+
+    <div class="bottom-row">
+      <div class="custom-box">
+        <input id="customAmount" type="number" min="1" placeholder="Custom amount" />
+        <button id="addCustom" class="btn primary">Add to Wallet</button>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button id="proceedBtn" class="btn ghost">Proceed to Payment</button>
+        <div style="font-weight:700;color:#0b2d4a">Helpline: +91-XXXXXXXXXX</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Amount added</div>
+
+  <script>
+    (function(){
+      const amountGrid = document.getElementById('amountGrid');
+      const amounts = Array.from(amountGrid.querySelectorAll('.amount'));
+      const toast = document.getElementById('toast');
+      const customInput = document.getElementById('customAmount');
+      const addCustomBtn = document.getElementById('addCustom');
+      const proceedBtn = document.getElementById('proceedBtn');
+      let selectedAmount = null;
+
+      function showToast(msg){
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(()=> toast.classList.remove('show'), 3000);
+      }
+
+      amounts.forEach(a=>{
+        a.addEventListener('click', ()=>{
+          amounts.forEach(x=> x.classList.remove('selected'));
+          a.classList.add('selected');
+          selectedAmount = Number(a.getAttribute('data-amount')) || null;
+          showToast(selectedAmount + '/- selected');
+          customInput.value = '';
+        });
+      });
+
+      addCustomBtn.addEventListener('click', ()=>{
+        const v = Number(customInput.value);
+        if (!v || v <= 0){ showToast('कृपया मान्य राशि दर्ज करें'); return; }
+        amounts.forEach(x=> x.classList.remove('selected'));
+        selectedAmount = v;
+        showToast(v + '/- added to wallet');
+      });
+
+      // ✅ Proceed to Payment updated to work directly with Custom Amount
+      proceedBtn.addEventListener('click', ()=>{
+        const v = Number(customInput.value);
+
+        if (v && v > 0) {
+          selectedAmount = v;
+          if (v === 1) {
+            window.open("QR500.HTML", "_blank"); // यहां अपनी image डालें
+            return;
+          }
+           if (v === 2) {window.open("QR500.HTML", "_blank");return;}
+          if (v === 2) {window.open("QR500.HTML", "_blank");return;}
+          
+          if (v >= 5 && v <= 10) {
+          window.open("QR2000.HTML", "_blank"); // यहां अपनी image या HTML file डालें
+          return;
+        }
+
+           else {
+            showToast('Proceeding to payment for ' + v + '/-');
+            return;
+          }
+        }
+
+        if (!selectedAmount){ 
+          showToast('कृपया पहले किसी राशि को चुनें'); 
+          return; 
+        }
+
+        showToast('Proceeding to payment for ' + selectedAmount + '/-');
+      });
+
+      const defaultBtn = amountGrid.querySelector('.amount[data-amount="100"]');
+      if(defaultBtn){ defaultBtn.classList.add('selected'); selectedAmount = 100; }
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
